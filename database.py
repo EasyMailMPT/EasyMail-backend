@@ -20,7 +20,20 @@ def add_query(session : orm.Session, query):
         print("Error: Such Querry already exist")
         session.rollback()
 
+def get_user(session : orm.Session, searched_username):
+    query = sqa.select(User).where(User.username == searched_username)
+    return session.execute(query)
 
+def if_query_searched(session : orm.Session, query):
+    query = sqa.select(Query).where(Query.query == query)
+    if len(session.execute(query)) > 0:
+        return True
+    else:
+        return False
+
+def get_emails_from_query(session : orm.Session, query):
+    q = sqa.select(Email).where(Email.query == query)
+    return session.execute(q)
 
 # Tablice
 class User(Base):
